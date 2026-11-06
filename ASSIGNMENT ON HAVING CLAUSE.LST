@@ -1,0 +1,113 @@
+SQL> --1. WAQTD department number and number of employees working in cach department if there are at least 2 CLERKS in each department
+SQL> SELECT COUNT(*),DEPTNO,JOB
+  2  FROM EMP
+  3  WHERE JOB='CLERK'
+  4  GROUP BY DEPTNO,JOB
+  5  HAVING COUNT(*)>=2;
+
+  COUNT(*)     DEPTNO JOB                                                                           
+---------- ---------- ---------                                                                     
+         2         20 CLERK     
+
+                                                                    
+
+SQL> --2. WAQTD department number and total salary needed to pay all employees if there are at least 4 employees in each department.
+SQL> SELECT SUM(SAL),DEPTNO
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*)>=4;
+
+  SUM(SAL)     DEPTNO                                                                               
+---------- ----------                                                                               
+      9400         30                                                                               
+     10875         20                                                                               
+
+
+SQL> --3.WAQTD number of employees earning salary more than 1200 in each job, and the total salary needed to pay them must exceed 3800.SELECT COUNT(*),JOB
+SQL> SELECT COUNT(*),JOB
+  2  FROM EMP
+  3  WHERE SAL>1200
+  4  GROUP BY JOB
+  5  HAVING SUM(SAL)+3800;
+HAVING SUM(SAL)+3800
+                   *
+ERROR at line 5:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT COUNT(*),JOB
+  2  FROM EMP
+  3  WHERE SAL>1200
+  4  GROUP BY JOB
+  5  HAVING SUM(SAL+3800);
+HAVING SUM(SAL+3800)
+                   *
+ERROR at line 5:
+ORA-00920: invalid relational operator 
+
+
+SQL> SELECT COUNT(*),JOB
+  2  FROM EMP
+  3  WHERE SAL>1200
+  4  GROUP BY JOB
+  5  HAVING SUM(SAL)>=3800;
+
+  COUNT(*) JOB                                                                                      
+---------- ---------                                                                                
+         4 SALESMAN                                                                                 
+         1 PRESIDENT                                                                                
+         3 MANAGER                                                                                  
+         2 ANALYST                                                                                  
+
+SQL> SELECT COUNT(*),SUM(SAL),JOB
+  2  FROM EMP
+  3  WHERE SAL>1200
+  4  GROUP BY JOB
+  5  HAVING SUM(SAL)>=3800;
+
+  COUNT(*)   SUM(SAL) JOB                                                                           
+---------- ---------- ---------                                                                     
+         4       5600 SALESMAN                                                                      
+         1       5000 PRESIDENT                                                                     
+         3       8275 MANAGER                                                                       
+         2       6000 ANALYST    
+                                                                   
+
+SQL> --4.. WAQTD department number and number of employees working only if there are exactly 2 MANAGERS in each department.
+SQL> SELECT COUNT(*),DEPTNO,JOB
+  2  FROM EMP
+  3  WHERE JOB='MANAGER'
+  4  GROUP BY DEPTNO,JOB
+  5  HAVING COUNT(*)<=2;
+
+  COUNT(*)     DEPTNO JOB                                                                           
+---------- ---------- ---------                                                                     
+         1         20 MANAGER                                                                       
+         1         30 MANAGER                                                                       
+         1         10 MANAGER    
+                                                                   
+
+SQL> SELECT COUNT(*),DEPTNO,JOB
+  2  FROM EMP
+  3  WHERE JOB='MANAGER'
+  4  GROUP BY DEPTNO,JOB
+  5  HAVING COUNT(*)=2;
+
+no rows selected
+
+
+SQL> --5.. WAQTD job and maximum salary of employees in each job if max salary exceeds 2600
+SQL> SELECT JOB,MAX(SAL)
+  2  FROM EMP
+  3  GROUP BY JOB
+  4  HAVING MAX(SAL)>2600;
+
+JOB         MAX(SAL)                                                                                
+--------- ----------                                                                                
+PRESIDENT       5000                                                                                
+MANAGER         2975                                                                                
+ANALYST   
+
+6. WAQTD the salaries which are repeated in the employee table.      3000                                                                                
+
+

@@ -1,0 +1,84 @@
+SQL> --------------------------------------------------GROUP BY----------------------------------------------------------------------------------
+
+
+SQL> --WAQTD NO OF EMPLOYEE PRESENT IN EACH
+SQL> --------------SCANARIO-1-----------------------
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+         6                                                                                          
+         5                                                                                          
+         3                                                                                          
+
+SQL> ---------------SCANARIO-2--------------------------
+  1  SELECT COUNT(*),DEPTNO
+  2  FROM EMP
+  3* GROUP BY DEPTNO
+  4  /
+
+  COUNT(*)     DEPTNO                                                                               
+---------- ----------                                                                               
+         6         30                                                                               
+         5         20                                                                               
+         3         10                                                                               
+
+
+SQL> ----------------------SCANARIO -3-------------------------
+SQL> --SELECT(DEPTNO,SAL) AND GROUP BY(DEPTNO)
+SQL> SELECT COUNT(*),DEPTNO,SAL
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+SELECT COUNT(*),DEPTNO,SAL
+                       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression 
+
+
+SQL> ---------------------SCANARIO-4-----------------------------
+SQL> SELECT CLAUSE HALI (DEPTNO) AND GROUP CLAUSE HALI(DEPTNO,SAL)->Its is not mandatory to pass the colname which is
+SQL> present in the group by colname/expression-->mandatory ,while exceuting the output it check the combination
+SQL> of multiple colmNs given in the group by clause
+SQL> SELECT COUNT(*),DEPTNO
+  2  FROM EMP
+  3  GROUP BY DEPTNO,SAL;
+
+  COUNT(*)     DEPTNO                                                                               
+---------- ----------                                                                               
+         1         10                                                                               
+         1         20                                                                               
+         1         20                                                                               
+         1         10                                                                               
+         2         30                                                                               
+         2         20                                                                               
+         1         30                                                                               
+         1         20                                                                               
+         1         10                                                                               
+         1         30                                                                               
+         1         30                                                                               
+         1         30                                                                               
+
+12 rows selected.
+SQL> --IT WILL CHECK FOR DEPTNO=20
+SQL> -- THEN IT WILL CHECK IF THEY FIND ANY DUPLICATE VALUE IN DEPTNO 10,20, 10 ,30 ,20
+SQL> -- 10 IS REPEATED THEN IT FIND FOR NEXT COL_NAME ( SAL) CHECK FOR COMBINATION WITH (DEPTNO,SAL)
+SQL> --IF THEIR COMBINATION IS NOT SAME THEN IT WILL PRINT 1 OR
+SQL> -- IF NOT IT WILL PRINT ,HOW MANY TIMES IT IS REPEATED
+
+
+ 
+SQL> -------------------SCANARIO-5------------------------------------------- 
+SQL> ------------QUESTION USING WHERE CLAUSE---------------------------------
+SQL>WAQTD NO EMPLOYEE PRESENT IN THE EACH DEPT IF THEY ARE WORKING AS SALESMAN ,CLERK,ANALYST
+  1  SELECT COUNT(*) ,DEPTNO
+  2  FROM EMP
+  3  WHERE JOB IN ('SALESMAN','CLERK','ANALYST')
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)     DEPTNO
+---------- ----------
+         5         30
+         4         20
+         1         10 

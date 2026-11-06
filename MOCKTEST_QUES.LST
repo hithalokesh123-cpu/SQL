@@ -1,0 +1,134 @@
+-------------------------------------------MOCK TEST QUESTION----------------------------------------------------------------------------
+
+SQL> --WAQTD ALL THE DETAILS OF EMPLOYEE ALONG WITH DESIGNATION,SALARY,DEPTNO SHOULD BE MERGED WHERE SALARY IS GREATER THAN 1500 AND JOB SHOULD BE SALESMAN,CLERK BUT NOT MANAGER
+SQL> SELECT EMP.*,JOB||' '||SAL||' '||DEPTNO AS EMPLOYEE_DETAILS
+  2  FROM EMP
+  3  WHERE (SAL>1500 AND JOB IN ('SALESMAN','CLERK')) AND JOB<>'MANAGER';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO EMPLOYEE_DETAILS                                                                                                  
+---------- ---------- --------- ---------- --------- ---------- ---------- ---------- -------------------------------------------------------------------------------------------                       
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30 SALESMAN 1600 30  
+                                                                                                
+
+SQL> --WAQTD EMPLOYEE NAME AS YOUR NAME COMBINE DESIGNATION, SALARY WHERE EMPLOYEES ARE EARNING
+SQL> --MORE THAN 2000 AND LESS THAN 4000
+SQL> SELECT 'HITHA'||' '||JOB||' '||SAL AS DETAILS
+  2  FROM EMP
+  3  WHERE SAL>2000 AND SAL<4000;
+
+DETAILS                                                                                                                                                                                                 
+--------------------------------------------------------                                                                                                                                                
+HITHA MANAGER 2975                                                                                                                                                                                      
+HITHA MANAGER 2850                                                                                                                                                                                      
+HITHA MANAGER 2450                                                                                                                                                                                      
+HITHA ANALYST 3000                                                                                                                                                                                      
+HITHA ANALYST 3000                                                                                                                                                                                      
+
+SQL> SPOOL OFF;
+
+--WAQTD EMPLOYEE NAME IF THEY ARE EARNING 4 DIGIT SALARY AND THEIR DESOIGNATION SATART WITH 'A','S','M'  AND ENDS WITH 'T','R','N' AND
+WORKING IN THE LOC 'CHICAGO','DALLAS','BOSTEN'
+1  SELECT ENAME
+  2  FROM EMP
+  3  WHERE SAL LIKE '____'
+  4  AND ( JOB LIKE 'A%' OR JOB LIKE 'S%' OR JOB LIKE 'M%')
+  5  AND (JOB LIKE '%T' OR JOB LIKE '%R' OR JOB LIKE '%N')
+  6  AND DEPTNO IN ( SELECT DEPTNO
+  7                   FROM DEPT
+  8*                   WHERE LOC IN ('CHICAGO','DALLAS','BOSTON'))
+SQL> /
+
+ENAME
+----------
+ALLEN
+WARD
+JONES
+MARTIN
+BLAKE
+SCOTT
+TURNER
+FORD
+
+8 rows selected.
+
+
+--WAQTD DNAME IF SALARY ENDS WITH 0,1,5 AND HIRED IN THE MONTH OF 'FEB','MAR','APR','SEPT'
+ 1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN (SELECT  DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL LIKE '%0' OR SAL LIKE '%1' OR SAL LIKE '%5'
+  6* AND HIREDATE LIKE '%FEB%' OR HIREDATE LIKE '%MAR%' OR HIREDATE LIKE '%APR%' OR HIREDATE LIKE '%SEPT%')
+SQL> /
+
+DNAME
+--------------
+ACCOUNTING
+RESEARCH
+SALES
+
+----------------PRE-MOCK-QUESTION----------------------------------------------------
+----------------------------------------------------------------------------------------
+SYNTAX- CHAR ,NUMBER, GROUP BY CLAUSE,ORDER BY CLAUSE WITH GROUP BY CLAUSE,LEFT OUTER JOIN,BETWEEN OPERATOR,DROP COLUMN,ASSIGN FOREGIN KEY
+
+1)WRITE  TO DISPLAY  EMPLOYEE NAME ,HIREDATE  SAL , WHO ARE EARNING 3 4 MINIMUM SAL OR 8 TH MAXIMUM SAL
+
+
+SELECT E1.ENAME,E1.HIREDATE,E1.SAL
+  FROM EMP E1
+   WHERE(SELECT COUNT(DISTINCT E2.SAL)-------------------------WRONG-----------------------------------------
+                      FROM EMP E2
+                      WHERE E1.SAL>E2.SAL)
+   OR ( 7 ) IN (SELECT COUNT(DISTINCT E2.SAL)
+                   FROM EMP E2
+                   WHERE E1.SAL<E2.SAL)
+/
+
+
+2)WAQT EMP NAME ,MANGER NAME, MANAGER'S LOC, IF EMPLOYEES ARE WORKING AS CLERK ANALYST AND  MANAGER ARE WORKING AS SALESMAN ,MANAGER AND MANAGER IS EARING 
+4 DIGIT SAL, AND EMPLOYEE DESIGNATION SHOULD END WITH G S A N
+
+
+
+1  SELECT E.ENAME,M.ENAME,ML.LOC
+  2  FROM EMP E,EMP M,DEPT ML
+  3  WHERE E.MGR=M.EMPNO
+  4  AND M.DEPTNO=ML.DEPTNO
+  5  AND E.JOB IN ('CLERK','ANALYST')
+  6  AND M.JOB IN ('SALESMAN','MANAGER')
+  7  AND M.SAL LIKE '____'
+  8* AND (E.JOB LIKE '%G' OR E.JOB LIKE '%S' OR E.JOB LIKE '%A' OR E.JOB LIKE '%N')
+SQL> /
+
+no rows selected
+
+
+SYNTAX:
+CHAR(SIZE)
+NUMBER(PRECISION,SCALE)
+LECT 
+SELECT GROUP FUNCTION /GROUP BY EXPRESSION
+FROM TABLE NAME
+WHERE < FILTER CONDITION>
+GROUP BY COLNAME/EXPRESSION;
+
+SELECT GROUP FUNCTION /GROUP BY EXPRESSION
+FROM TABLE NAME
+WHERE <FILTER CONDITION>
+GROUP BY COLNAME/EXPRESSION
+ORDER BY GROUP BY EXPRESSION;
+
+SELECT COL NAME/EXP
+FROM TABLE NAME1 LEFT[OUTER] JOIN TABLE NAME2
+ON <JOIN CONDITION>;
+
+SELECT COL_NAME/EXPR
+FROM TABLE NAME 
+WHERE COLNAME BETWEEN HIGHEST RANGE AND LOWEST RANGE;
+
+DROP TABLE TABLE_NAME;
+
+ALTER TABLE TABLE_NAME
+ADD CONSTRAINT CON_REFERENCE_NAME CONSTRAINT_TYPE(COL_NAM)
+REFERENCES PARENT_TABLE_NAME(COL_NAME)
+

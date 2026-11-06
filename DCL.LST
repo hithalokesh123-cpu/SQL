@@ -1,0 +1,60 @@
+SQL> SET PAGES 200 LINES 200
+SQL> CONN
+Enter user-name: SCOTT
+Connected.
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID                                                                                                                                                       
+------------------------------ ------- ----------                                                                                                                                                       
+BONUS                          TABLE                                                                                                                                                                    
+DEPT                           TABLE                                                                                                                                                                    
+EMP                            TABLE                                                                                                                                                                    
+FAC                            TABLE                                                                                                                                                                    
+SALGRADE                       TABLE                                                                                                                                                                    
+STUDENT                        TABLE                                                                                                                                                                    
+
+6 rows selected.
+
+SQL> SELECT HR.*
+  2  FROM HR;
+FROM HR
+     *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> GRANT SELECT
+  2  ON HR
+  3  ;
+
+*
+ERROR at line 3:
+ORA-00905: missing keyword 
+
+
+SQL> GRANT SELECT
+  2  ON EMP
+  3  TO HR;
+
+Grant succeeded.
+
+SQL> REVOKE SELECT
+  2  ON EMP
+  3  TO HR;
+TO HR
+*
+ERROR at line 3:
+ORA-00905: missing keyword 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  REVOKE SELECT
+  2  ON EMP
+  3* FROM HR
+SQL> /
+
+Revoke succeeded.
+
+SQL> SPOOL OFF;

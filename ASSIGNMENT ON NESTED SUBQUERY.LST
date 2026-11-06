@@ -1,0 +1,182 @@
+------------------------------------NESTED SUBQUERY----------------------------
+
+SQL> --1. WAQTD 2ND MINIMUM SALARY.
+
+  1  SELECT MIN(SAL)
+  2  FROM EMP
+  3  WHERE SAL > (SELECT MIN(SAL)
+  4*             FROM EMP)
+SQL> /
+
+  MIN(SAL)                                                                                          
+----------                                                                                          
+       950   
+                                                                                       
+
+SQL> --2. WAQTD 5TH MAXIMUM SALARY.
+
+  1  SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL < (SELECT MAX(SAL)
+  4               FROM EMP
+  5   WHERE SAL < (SELECT MAX(SAL)
+  6                  FROM EMP
+  7   WHERE SAL < (SELECT MAX(SAL)
+  8                  FROM EMP
+  9   WHERE SAL < (SELECT MAX(SAL)
+ 10*                FROM EMP))))
+ 11  /
+
+  MAX(SAL)                                                                                          
+----------                                                                                          
+      2450   
+                                                                                       
+
+SQL> --3. WAQTD NAME OF THE EMPLOYEE EARNING 3RD MAXIMUM SALARY.
+
+  1  SELECT ENAME
+  2  FROM EMP
+  3  WHERE SAL = (SELECT MAX(SAL)
+  4               FROM EMP
+  5   WHERE SAL < (SELECT MAX(SAL)
+  6                  FROM EMP
+  7   WHERE SAL < (SELECT MAX(SAL)
+  8*                FROM EMP)))
+SQL> /
+
+ENAME                                                                                               
+----------                                                                                          
+JONES        
+
+                                                                                       
+
+SQL> --4. WAQTD EMPNO OF THE EMPLOYEE EARNING 2ND MAXIMUM SALARY
+SQL> SELECT EMPNO
+  2  FROM EMP
+  3  WHERE SAL = (SELECT MAX(SAL)
+  4                  FROM EMP
+  5  WHERE SAL < (SELECT MAX(SAL)
+  6                 FROM EMP));
+
+     EMPNO                                                                                          
+----------                                                                                          
+      7788                                                                                          
+      7902                                                                                          
+
+
+SQL> --5. WAQTD DEPARTMENT NAME OF AN EMPLOYEE GETTING 4TH MAX SAL
+SQL> SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL = (SELECT MAX(SAL)
+  6                                FROM EMP
+  7                   WHERE SAL < (SELECT MAX(SAL)
+  8                                FROM EMP
+  9                   WHERE SAL < (SELECT MAX(SAL)
+ 10                               FROM EMP
+ 11                   WHERE SAL < (SELECT MAX(SAL)
+ 12                                  FROM EMP)))));
+
+DNAME                                                                                               
+--------------                                                                                      
+SALES      
+
+                                                                                         
+
+SQL> --6. WAQTD DETAILS OF THE EMPLOYEE WHO WAS HIRED
+  1  SELECT *
+  2  FROM EMP
+  3  WHERE HIREDATE < (SELECT MIN(HIREDATE)
+  4*                   FROM EMP)
+SQL> /
+
+no rows selected
+
+
+SQL> --6. WAQTD DETAILS OF THE EMPLOYEE WHO WAS HIRED 2ND
+  1  SELECT *
+  2  FROM EMP
+  3  WHERE HIREDATE =(SELECT MIN(HIREDATE)
+  4                   FROM EMP
+  5  WHERE HIREDATE >(SELECT MIN(HIREDATE)
+  6*                      FROM EMP))
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO               
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------               
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30     
+          
+
+SQL> --7. WAQTD NAME OF THE EMPLOYEE HIRED BEFORE THE LAST EMPLOYEE.
+
+  1  SELECT ENAME
+  2  FROM EMP
+  3  WHERE HIREDATE =(SELECT MAX( HIREDATE)
+  4                    FROM EMP
+  5  WHERE HIREDATE < (SELECT MAX(HIREDATE)
+  6*                    FROM EMP))
+SQL> /
+
+ENAME                                                                                               
+----------                                                                                          
+SCOTT   
+
+                                                                                            
+
+SQL> --8. WAQTD LOC OF THE EMPLOYEE WHO WAS HIRED FIRST.
+  1  SELECT LOC
+  2  FROM DEPT
+  3  WHERE DEPTNO = (SELECT DEPTNO
+  4                  FROM EMP
+  5                  WHERE HIREDATE = (SELECT MIN(HIREDATE)
+  6*                                   FROM EMP))
+SQL> /
+
+LOC                                                                                                 
+-------------                                                                                       
+DALLAS   
+
+                                                                                           
+
+SQL> --9. WAQTD DETAILS OF THE EMPLOYEE EARNING 7TH MINIMUM SALARY.
+SQL> SELECT *
+  2  FROM EMP
+  3  WHERE SAL = (SELECT MIN(SAL)
+  4               FROM EMP
+  5  WHERE SAL > (SELECT MIN(SAL)
+  6               FROM EMP
+  7  WHERE SAL > (SELECT MIN(SAL)
+  8                   FROM EMP
+  9  WHERE SAL > (SELECT MIN(SAL)
+ 10              FROM EMP
+ 11  WHERE SAL > (SELECT MIN(SAL)
+ 12                   FROM EMP
+ 13  WHERE SAL > (SELECT MIN(SAL)
+ 14                 FROM EMP
+ 15  WHERE SAL > (SELECT MIN(SAL)
+ 16                  FROM EMP)))))));
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO               
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------               
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30   
+
+            
+
+SQL> --10. WAQTD DNAME OF EMPLOYEE GETTING 2ND MAXIMUM SALARY.
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE  DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL = (SELECT MAX(SAL)
+  6                                FROM EMP
+  7                   WHERE SAL < (SELECT MAX(SAL)
+  8                                   FROM EMP
+  9*                          )))
+SQL> /
+
+DNAME                                                                                               
+--------------                                                                                      
+RESEARCH                                                                                            
+
+SQL> SPOOL OFF;

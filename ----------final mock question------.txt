@@ -1,0 +1,213 @@
+----------final mock question----------------
+syntax-number datatype
+       having clause
+        order by with group by claude
+       not in operatore
+ not like operator
+is
+ inner join 
+natural join 
+outer join
+modify datatype
+add col
+rename col
+revoke 
+
+
+waqtd EMPLOYEE NAME MANAGER NAME MANAGERV LOC, IF MANAGER ARE WORKING AS 'SALESMAN,CLERK,ANALYST AND EMPLOYEE LOCATION MUST CONATION A C D N AND MANAGERV OR HIRED TUESDAY WEDNESDAY MONTH OF MARCH IN THE YEAR 82 AND MANAGER SHOULD EARN EVEN DIGIT SALARY 
+ 
+CREATE TABLE  AND BUILT A RELATION WITH DEPARTMENT TABLE AND PERFORM DML OPERATION AND GIVE PERMISSION TO HR
+
+                                   ------------------ANSWER----------------------------------
+SYNTAX:
+--NUMBER DATAYPE---------
+NUMBER(PRECISION,[SCALE])
+
+
+--HAVING CLAUSE----------
+SELECT GROUP FUNCTION/GROUP BY EXPRESSION
+FROM TABLE_NAME
+[WHERE <FILTER CONDITION>]
+GROUP BY COL_NAME/EXPRESSION
+HAVING <GROUP FILTER CONDITION>;
+
+
+----ORDER BY WITHOUT GROUP BY CLAUSE--------------
+SELECT COL_NAME/EXPRESSION
+FROM TABLE_NAME
+[WHERE <FILTER CONDITION>]
+ORDER BY COL_NAME/EXPRESSION [ASC]/DESC;
+
+
+---NOT IN OPERATOR----------
+COL_NAME/EXP  NOT IN (VAL1,VAL2....);
+
+
+---NOT LIKE OPERATOR---------
+COL_NAME/EXP NOT LIKE '_%CHARACTER%_';
+
+---IS OPERATOR------------
+COL_NAME/EXP IS NULL;
+
+
+---INNER JOIN----------
+SELECT COL_NAME/EXP
+FROM TABLE_NAME1,TABLE_NAME2
+WHERE <JOIN CONDITION>
+
+
+--NATURAL JOIN------------
+SELECT COL_NAME/EXPRESSION
+FROM TABLE_NAME1 NATURAL JOIN TABLE_NAME2
+
+
+--- RIGHT OUTER JOIN------------
+SELECT COL_NAME/EXPRESSION
+FROM TABLE_NAME1 , TABLE_NAME2
+WHERE TABLE_NAME1.COL_NAME(+)=TABLE_NAME2.COL_NAME;
+
+
+---------MODIFY THE DATATYPE(ONLY DATATYPE,ONLY SIZE,BOTH)-----------
+ALTER TABLE TABLE_NAME
+MODIFY COL_NAME  NEW/EXIXTING DATATYPE NEW CONSTRAINT(NOT NULL/NULL);
+
+----ADD COL------
+ALTER TABLE TABLE_NAME
+ADD COL_NAME DATATYPE CONSTRAINT;
+
+---RENAME COL----------
+ALTER TABLE TABLE_NAME
+RENAME COLUMN EXIXTING_COL_NAME TO NEW_COL_NAME;
+
+--REVOKE---
+REVOKE SQL_STATEMENT 
+ON TABLE_NAME
+FROM USER_NAME;
+
+
+---QUERY-------------------
+SQL> SELECT E.ENAME AS EMPLOYEE_NAME, M.ENAME AS MANAGER_NAME, D.LOC AS MANAGER_LOC
+  2  FROM EMP E,EMP M,DEPT D
+  3  WHERE E.MGR = M.EMPNO
+  4  AND M.DEPTNO = D.DEPTNO
+  5  AND M.JOB IN ('SALESMAN', 'CLERK', 'ANALYST')
+  6  AND (INSTR(D.LOC, 'A') > 0
+  7       OR  INSTR(D.LOC, 'C') > 0
+  8       OR INSTR(D.LOC, 'D') > 0
+  9       OR INSTR(D.LOC, 'N') > 0)
+ 10  AND TO_CHAR(M.HIREDATE, 'DAY') IN ('TUESDAY', 'WEDNESDAY')
+ 11  AND TO_CHAR(M.HIREDATE, 'MM') = '03'
+ 12  AND TO_CHAR(M.HIREDATE, 'YY') = '82'
+ 13  AND MOD(M.SAL, 2) = 0;
+
+ 
+creation---------------
+  1  CREATE TABLE EMPLOYEE
+  2  (
+  3  EMPID NUMBER(5),
+  4  ENAME VARCHAR(20),
+  5  JOB VARCHAR(20),
+  6  SAL NUMBER(8,2),
+  7  DEPTNO NUMBER(2)
+  8* )
+SQL> /
+
+insertion---------
+SQL> INSERT INTO EMPLOYEE VALUES(101,'HITHA','DEVELOPER',30000,10);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(102,'DEEPTHI','TESTING',30000,30);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(103,'JEEVITHA','DATABASE ADMIN',35000,20);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(104,'RAJ','CLERK',10000,30);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(105,'SANJU','MANAGER',50000,20);
+
+1 row created.
+
+
+SQL> DESC EMPLOYEE;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMPID                                                                                                                      NUMBER(5)
+ ENAME                                                                                                                      VARCHAR2(20)
+ JOB                                                                                                                        VARCHAR2(20)
+ SAL                                                                                                                        NUMBER(8,2)
+ DEPTNO   
+
+
+SQL> SELECT *
+  2  FROM EMPLOYEE;
+
+     EMPID ENAME                JOB                         SAL     DEPTNO
+---------- -------------------- -------------------- ---------- ----------
+       101 HITHA                DEVELOPER                 30000         10
+       102 DEEPTHI              TESTING                   30000         30
+       103 JEEVITHA             DATABASE ADMIN            35000         20
+       104 RAJ                  CLERK                     10000         30
+       105 SANJU                MANAGER                   50000         20
+
+
+--------------update--------------
+SQL> UPDATE EMPLOYEE
+  2  SET SAL=32000
+  3  WHERE EMPID=102;
+
+1 row updated.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+     EMPID ENAME                JOB                         SAL     DEPTNO
+---------- -------------------- -------------------- ---------- ----------
+       101 HITHA                DEVELOPER                 30000         10
+       102 DEEPTHI              TESTING                   32000         30
+       103 JEEVITHA             DATABASE ADMIN            35000         20
+       104 RAJ                  CLERK                     10000         30
+       105 SANJU                MANAGER                   50000         20
+
+------------delete--------------------------------
+SQL> DELETE FROM EMPLOYEE
+  2  WHERE EMPID=104;
+
+1 row deleted.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+     EMPID ENAME                JOB                         SAL     DEPTNO
+---------- -------------------- -------------------- ---------- ----------
+       101 HITHA                DEVELOPER                 30000         10
+       102 DEEPTHI              TESTING                   32000         30
+       103 JEEVITHA             DATABASE ADMIN            35000         20
+       105 SANJU                MANAGER                   50000         20
+
+------------relation--------------------------
+  1  ALTER TABLE EMPLOYEE
+  2  ADD CONSTRAINT F_D FOREIGN KEY(DEPTNO)
+  3* REFERENCES DEPT(DEPTNO)
+SQL> /
+
+Table altered.
+
+----grant-------------
+
+  1  GRANT SELECT
+  2  ON EMPLOYEE
+  3* TO HR
+SQL> /
+
+Grant succeeded.
+
+--------permission grant hr-------------
+ conn
+Enter user-name: hr/tiger
+Connected.
+SQL>
+

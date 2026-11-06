@@ -1,0 +1,458 @@
+------------------------------------NESTED QUERY------------------------------------------------------------
+
+SQL> SELECT MAX(SAL)
+  2  FROM EMP;
+
+  MAX(SAL)
+----------
+      5000
+
+SQL> SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL< (SELECT MAX(SAL)
+  4             FROM EMP);
+
+  MAX(SAL)
+----------
+      3000
+
+SQL> SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL<(SELECT MAX(SAL)
+  4             FROM EMP
+  5             WHERE SAL < (SELECT  MAX(SAL)
+  6                          FROM EMP;
+WHERE SAL<(SELECT MAX(SAL)
+           *
+ERROR at line 3:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL<(SELECT MAX(SAL)
+  4             FROM EMP
+  5             WHERE SAL < (SELECT  MAX(SAL)
+  6*                         FROM EMP))
+SQL> /
+
+  MAX(SAL)
+----------
+      2975
+
+SQL> -- WAQTD DEPTNAME WHO IS EARNING 5TH MAXIMUM SALARY
+SQL> SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL<(SELECT MAX(SAL)
+  4             FROM EMP
+  5             WHERE SAL < (SELECT  MAX(SAL)
+  6                          FROM EMP;
+WHERE SAL<(SELECT MAX(SAL)
+           *
+ERROR at line 3:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> SELECT DNAME
+  2  FROM EMP
+  3  WHERE DEPTNO =(SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT  SAL
+  6                             FROM EMP
+  7
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM EMP
+  3  WHERE DEPTNO =(SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP)))));
+ 15  /
+                                                                            FROM EMP)))));
+                                                                                         *
+ERROR at line 14:
+ORA-00911: invalid character
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM EMP
+  3  WHERE DEPTNO =(SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))));
+SQL> /
+                                                                            FROM EMP))))));
+                                                                                          *
+ERROR at line 14:
+ORA-00911: invalid character
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM EMP
+  3  WHERE DEPTNO =(SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))))
+SQL> /
+SELECT DNAME
+       *
+ERROR at line 1:
+ORA-00904: "DNAME": invalid identifier
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO =(SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))))
+SQL> /
+WHERE DEPTNO =(SELECT DEPTNO
+               *
+ERROR at line 3:
+ORA-01427: single-row subquery returns more than one row
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO  ALL (SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))))
+SQL> /
+WHERE DEPTNO  ALL (SELECT DEPTNO
+              *
+ERROR at line 3:
+ORA-00920: invalid relational operator
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL <(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))))
+SQL> /
+
+DNAME
+--------------
+SALES
+RESEARCH
+ACCOUNTING
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT DNAME
+  2  FROM DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                 FROM EMP
+  5                 WHERE SAL=(SELECT   MAX(SAL)
+  6                             FROM EMP
+  7                             WHERE SAL <(SELECT   MAX(SAL)
+  8                                         FROM EMP
+  9                                         WHERE SAL <(SELECT   MAX(SAL)
+ 10                                                     FROM EMP
+ 11                                                     WHERE SAL <(SELECT   MAX(SAL)
+ 12                                                                  FROM EMP
+ 13                                                                  WHERE SAL <(SELECT   MAX(SAL)
+ 14*                                                                             FROM EMP))))))
+SQL> /
+
+DNAME
+--------------
+ACCOUNTING
+
+SQL> ---LOC WHO IS EARNING 7TH MINIMUM SAL
+SQL> SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9    7                                       WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11    7                                                     WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13    7                                                                  WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15    7                                                                                WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17    7                                                                                              WHERE SAL > (SELECT   MIN(SAL)
+ 18                                                                                                                 FROM EMP
+ 19    7                                                                                            WHERE SAL > (SELECT   MIN(SAL)
+ 20
+SQL> ))))))));
+SP2-0042: unknown command "))))))))" - rest of line ignored.
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9    7                                       WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11    7                                                     WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13    7                                                                  WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15    7                                                                                WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17    7                                                                                             (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*   7                                                                                           /
+SQL> /
+  7                                       WHERE SAL > (SELECT   MIN(SAL)
+  *
+ERROR at line 9:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9    7                                       WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11    7                                                     WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13    7                                                                  WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15    7                                                                                WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17    7                                                                                 WHERESAL >  (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*   7                                                                                           /
+SQL> /
+  7                                       WHERE SAL > (SELECT   MIN(SAL)
+  *
+ERROR at line 9:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9    7                                       WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11    7                                                     WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13    7                                                                  WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15    7                                                                                WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17    7                                                                                 WHERE SAL >  (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*   7                                                                                           /
+SQL> /
+  7                                       WHERE SAL > (SELECT   MIN(SAL)
+  *
+ERROR at line 9:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9    7                                       WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11    7                                                     WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13    7                                                                  WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15    7                                                                                WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17    7                                                                                 WHERE SAL >  (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*   7                                                                                           /
+SQL> /
+  7                                       WHERE SAL > (SELECT   MIN(SAL)
+  *
+ERROR at line 9:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9                                          WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11                                                       WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13                                                                    WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15                                                                                 WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17                                                                                  WHERE SAL >  (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*                                                                                             /
+SQL> /
+                                                                                            /
+                                                                                            *
+ERROR at line 19:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9                                          WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11                                                       WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13                                                                    WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15                                                                                 WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17                                                                                  WHERE SAL >  (SELECT   MIN(SAL)
+ 18                                                                                                       FROM EMP))))))))
+ 19*                                                                                             /
+ 20  /
+                                                                                            /
+                                                                                            *
+ERROR at line 19:
+ORA-00933: SQL command not properly ended
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  SELECT LOC
+  2   FROM  DEPT
+  3  WHERE DEPTNO IN (SELECT DEPTNO
+  4                   FROM EMP
+  5                   WHERE SAL=(SELECT MIN(SAL)
+  6                              FROM EMP
+  7                              WHERE SAL > (SELECT   MIN(SAL)
+  8                                            FROM EMP
+  9                                          WHERE SAL > (SELECT   MIN(SAL)
+ 10                                                          FROM EMP
+ 11                                                       WHERE SAL > (SELECT   MIN(SAL)
+ 12                                                                        FROM EMP
+ 13                                                                    WHERE SAL > (SELECT   MIN(SAL)
+ 14                                                                                     FROM EMP
+ 15                                                                                 WHERE SAL > (SELECT   MIN(SAL)
+ 16                                                                                                   FROM EMP
+ 17                                                                                  WHERE SAL >  (SELECT   MIN(SAL)
+ 18*                                                                                                      FROM EMP))))))))
+ 19  /
+
+LOC
+-------------
+CHICAGO
+
+SQL>

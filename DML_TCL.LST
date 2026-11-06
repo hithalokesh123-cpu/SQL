@@ -1,0 +1,308 @@
+SQL> DESC STUDENT;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ ID                                                                                                                         CHAR(4)
+ SNAME                                                                                                                      VARCHAR2(20)
+ PHONE                                                                                                                      NUMBER(10)
+
+SQL> INSERT INTO STUDENT VALUES (2356, 'HITHA', 7123456890');
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> INSERT INTO STUDENT VALUES (2356, 'HITHA', 7123456890);
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+2356 HITHA                7123456890                                                                                                                                                                    
+
+SQL> INSERT INTO STUDENT VALUES (&ID,&SNAME,&PHONE);
+Enter value for id: 1
+Enter value for sname: 'DEEPTHI'
+Enter value for phone: 1234567890
+old   1: INSERT INTO STUDENT VALUES (&ID,&SNAME,&PHONE)
+new   1: INSERT INTO STUDENT VALUES (1,'DEEPTHI',1234567890)
+
+1 row created.
+
+SQL> /
+Enter value for id: 2
+Enter value for sname: 'SHREYA'
+Enter value for phone: 1234253688
+old   1: INSERT INTO STUDENT VALUES (&ID,&SNAME,&PHONE)
+new   1: INSERT INTO STUDENT VALUES (2,'SHREYA',1234253688)
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+2356 HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+2    SHREYA               1234253688                                                                                                                                                                    
+
+SQL> INSERT INTO STUDENT (ID, SNAME) VALUES (3,'ANYA');
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+2356 HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+2    SHREYA               1234253688                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+
+SQL> UPDATE STUDENT
+  2  SET ID=0
+  3  WHERE SNAME='HITHA';
+
+1 row updated.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+2    SHREYA               1234253688                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+
+SQL> SHOW RECYCLEBIN;
+SQL> DELETE FROM STUDENT
+  2  WHERE ID=2;
+
+1 row deleted.
+
+SQL> SHOW RECYCLEBIN;
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+
+SQL> --TCL--
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+
+SQL> INSERT INTO STUDENT VALUES(4,'PREETHI',1231234567);
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> INSERT INTO STUDENT VALUES (5,'HELLO',1233453);
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+5    HELLO                   1233453                                                                                                                                                                    
+
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+
+SQL> SAVEPOINT S1;
+
+Savepoint created.
+
+SQL> INSERT INTO STUDENT VALUES (&ID, &SNAME, &PHONE);
+Enter value for id: 5
+Enter value for sname: 'HELLO'
+Enter value for phone: 3242344
+old   1: INSERT INTO STUDENT VALUES (&ID, &SNAME, &PHONE)
+new   1: INSERT INTO STUDENT VALUES (5, 'HELLO', 3242344)
+
+1 row created.
+
+SQL> /
+Enter value for id: 6
+Enter value for sname: 'WHAT'
+Enter value for phone: 2343434
+old   1: INSERT INTO STUDENT VALUES (&ID, &SNAME, &PHONE)
+new   1: INSERT INTO STUDENT VALUES (6, 'WHAT', 2343434)
+
+1 row created.
+
+SQL> SAVEPOINT S2;
+
+Savepoint created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+5    HELLO                   3242344                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+6    WHAT                    2343434                                                                                                                                                                    
+
+6 rows selected.
+
+SQL> INSERT INTO STUDENT VALUES (7,'MORNING',234234);
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+5    HELLO                   3242344                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+6    WHAT                    2343434                                                                                                                                                                    
+7    MORNING                  234234                                                                                                                                                                    
+
+7 rows selected.
+
+SQL> ROLLBACK S2;
+ROLLBACK S2
+         *
+ERROR at line 1:
+ORA-02181: invalid option to ROLLBACK WORK 
+
+
+SQL> ROLLBACK SAVEPOINT S2;
+ROLLBACK SAVEPOINT S2
+         *
+ERROR at line 1:
+ORA-02181: invalid option to ROLLBACK WORK 
+
+
+SQL> ROLLBACK TO S2;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+5    HELLO                   3242344                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+6    WHAT                    2343434                                                                                                                                                                    
+
+6 rows selected.
+
+SQL> ROLLBACK TO S1;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+
+SQL> DELETE FROM STUDENT;
+
+4 rows deleted.
+
+SQL> SELECT * FROM STUDENT;
+
+no rows selected
+
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+ID   SNAME                     PHONE                                                                                                                                                                    
+---- -------------------- ----------                                                                                                                                                                    
+0    HITHA                7123456890                                                                                                                                                                    
+1    DEEPTHI              1234567890                                                                                                                                                                    
+3    ANYA                                                                                                                                                                                               
+4    PREETHI              1231234567                                                                                                                                                                    
+
+SQL> TRUNCATE STUDENT;
+TRUNCATE STUDENT
+               *
+ERROR at line 1:
+ORA-03290: Invalid truncate command - missing CLUSTER or TABLE keyword 
+
+
+SQL> TRUNCATE TABLE STUDENT;
+
+Table truncated.
+
+SQL> SELECT * FROM STUDENT;
+
+no rows selected
+
+SQL> SHOW RECYCLEBIN;
+SQL> ROLLBACK;
+
+Rollback complete.
+
+SQL> SELECT * FROM STUDENT;
+
+no rows selected
+
+SQL> SPOOL OFF;

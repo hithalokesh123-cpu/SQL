@@ -1,0 +1,498 @@
+------------------TABLE CTREATION------------------------
+SQL> SELECT * FROM TAB
+  2  ;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+SALGRADE                       TABLE
+
+SQL> CREATE TABLE STU
+  2  (
+  3  ID NUMBER(4) PRIMARY KEY,
+  4  NAME VARCHAR(20)
+  5  PHNO NUMBER(10)
+  6  ADDRESS VARCHAR(30)
+  7  );
+PHNO NUMBER(10)
+*
+ERROR at line 5:
+ORA-00907: missing right parenthesis
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  CREATE TABLE STU
+  2  (
+  3  ID NUMBER(4) PRIMARY KEY,
+  4  NAME VARCHAR(20),
+  5  PHNO NUMBER(10),
+  6  ADDRESS VARCHAR(30)
+  7* )
+SQL> /
+
+Table created.
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  CREATE TABLE FAC
+  2  (
+  3  FID NUMBER(4) PRIMARY KEY,
+  4  FNAME VARCHAR(20),
+  5  F_PHNO NUMBER(10),
+  6  EMAIL VARCHAR(15)
+  7* )
+SQL> /
+
+Table created.
+
+SQL> DESC STU;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ID                                                    NOT NULL NUMBER(4)
+ NAME                                                           VARCHAR2(20)
+ PHNO                                                           NUMBER(10)
+ ADDRESS                                                        VARCHAR2(30)
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          VARCHAR2(20)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAC                            TABLE
+SALGRADE                       TABLE
+STU                            TABLE
+
+6 rows selected.
+
+SQL> RENAME STU TO STUDENT;
+
+Table renamed.
+
+SQL> SELECT *FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAC                            TABLE
+SALGRADE                       TABLE
+STUDENT                        TABLE
+
+6 rows selected.
+
+SQL> DESC STU;
+ERROR:
+ORA-04043: object STU does not exist
+
+SQL> ---------------------------ALTER-------------------------------------------
+SQL> ALTER TABLE TABLE_NAME
+  2  ADD EMAIL VARCHAR(15) NOT NULL;
+ALTER TABLE TABLE_NAME
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2* ADD EMAIL VARCHAR(15) NOT NULL
+SQL> /
+
+Table altered.
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2*  DROP VARCHAR(15) NOT NULL
+SQL> /
+ DROP VARCHAR(15) NOT NULL
+      *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2* DROP COLUMN EMAIL
+SQL> /
+
+Table altered.
+
+SQL> DESC STUDENT;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ID                                                    NOT NULL NUMBER(4)
+ NAME                                                           VARCHAR2(20)
+ PHNO                                                           NUMBER(10)
+ ADDRESS                                                        VARCHAR2(30)
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2* RENAME COLUMN NAME TO NAMES
+SQL> /
+
+Table altered.
+
+SQL> DESC STUDENT;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ID                                                    NOT NULL NUMBER(4)
+ NAMES                                                          VARCHAR2(20)
+ PHNO                                                           NUMBER(10)
+ ADDRESS                                                        VARCHAR2(30)
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          VARCHAR2(20)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> ALTER TABLE FAC
+  2  MODIFY FNAME CHAR(10);
+
+Table altered.
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          CHAR(10)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE FAC
+  2* MODIFY FNAME CHAR(20)
+SQL> /
+
+Table altered.
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          CHAR(20)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE FAC
+  2* MODIFY FNAME VARCHAR(30)
+SQL> /
+
+Table altered.
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          VARCHAR2(30)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+1  ALTER TABLE FAC
+  2* DROP CONSTRAINT U_N;
+  3  /
+DROP CONSTRAINT U_N;
+                   *
+ERROR at line 2:
+ORA-00911: invalid character
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE FAC
+  2* DROP CONSTRAINT U_N
+SQL> /
+
+Table altered.
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          VARCHAR2(30)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> SELECT *
+  2  FROM USER_CONSTRAINTS
+  3  WHERE TABLE_NAME='FAC';
+
+OWNER
+----------------------------------------------------------------------------------------------------
+CONSTRAINT_NAME                C TABLE_NAME
+------------------------------ - ------------------------------
+SEARCH_CONDITION
+--------------------------------------------------------------------------------
+R_OWNER
+----------------------------------------------------------------------------------------------------
+R_CONSTRAINT_NAME              DELETE_RU STATUS   DEFERRABLE     DEFERRED  VALIDATED
+------------------------------ --------- -------- -------------- --------- -------------
+GENERATED      BAD RELY LAST_CHAN INDEX_OWNER                    INDEX_NAME
+-------------- --- ---- --------- ------------------------------ ------------------------------
+INVALID VIEW_RELATED
+------- --------------
+SCOTT
+SYS_C007059                    P FAC
+
+
+                                         ENABLED  NOT DEFERRABLE IMMEDIATE VALIDATED
+GENERATED NAME          11-SEP-26 SCOTT                          SYS_C007059
+
+
+
+SQL> ALTER TABLE FAC
+  2  ADD CONSTRAINT U_N UNIQUE (NAME);
+ADD CONSTRAINT U_N UNIQUE (NAME)
+                           *
+ERROR at line 2:
+ORA-00904: "NAME": invalid identifier
+
+
+SQL> EDL
+SP2-0042: unknown command "EDL" - rest of line ignored.
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE FAC
+  2* ADD CONSTRAINT U_N UNIQUE (FNAME)
+SQL> /
+
+Table altered.
+
+SQL> SELECT *
+  2  FROM USER_CONSTRAINTS
+  3  WHERE TABLE_NAME='FAC';
+
+OWNER
+----------------------------------------------------------------------------------------------------
+CONSTRAINT_NAME                C TABLE_NAME
+------------------------------ - ------------------------------
+SEARCH_CONDITION
+--------------------------------------------------------------------------------
+R_OWNER
+----------------------------------------------------------------------------------------------------
+R_CONSTRAINT_NAME              DELETE_RU STATUS   DEFERRABLE     DEFERRED  VALIDATED
+------------------------------ --------- -------- -------------- --------- -------------
+GENERATED      BAD RELY LAST_CHAN INDEX_OWNER                    INDEX_NAME
+-------------- --- ---- --------- ------------------------------ ------------------------------
+INVALID VIEW_RELATED
+------- --------------
+SCOTT
+SYS_C007059                    P FAC
+
+
+                                         ENABLED  NOT DEFERRABLE IMMEDIATE VALIDATED
+GENERATED NAME          11-SEP-26 SCOTT                          SYS_C007059
+
+
+SCOTT
+U_N                            U FAC
+
+
+                                         ENABLED  NOT DEFERRABLE IMMEDIATE VALIDATED
+USER NAME               15-SEP-26 SCOTT                          U_N
+
+
+
+SQL> DESC STUDENT;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ID                                                    NOT NULL NUMBER(4)
+ NAMES                                                          VARCHAR2(20)
+ PHNO                                                           NUMBER(10)
+ ADDRESS                                                        VARCHAR2(30)
+
+SQL> DESC FAC;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ FID                                                   NOT NULL NUMBER(4)
+ FNAME                                                          VARCHAR2(30)
+ F_PHNO                                                         NUMBER(10)
+ EMAIL                                                          VARCHAR2(15)
+
+SQL> -----------FOREIGN KEY -----------------------------------
+SQL> ALTER TABLE STUDENT
+  2  ADD FID NUMBER(4);
+
+Table altered.
+
+SQL> ALTER TABLE STUDENT
+  2  ADD CONSTRAINT R_D FOREIGN KEY(FID);
+ADD CONSTRAINT R_D FOREIGN KEY(FID)
+                                  *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2* ADD CONSTRAINT R_D FOREIGN KEY(FID);
+  3  /
+ADD CONSTRAINT R_D FOREIGN KEY(FID);
+                                   *
+ERROR at line 2:
+ORA-00911: invalid character
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2* ADD CONSTRAINT R_D FOREIGN KEY(FID)
+SQL> /
+ADD CONSTRAINT R_D FOREIGN KEY(FID)
+                                  *
+ERROR at line 2:
+ORA-00905: missing keyword
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  ALTER TABLE STUDENT
+  2  ADD CONSTRAINT R_D FOREIGN KEY(FID)
+  3* REFERENCES FAC(FID)
+SQL> /
+
+Table altered.
+
+SQL> DESC STUDENT;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ID                                                    NOT NULL NUMBER(4)
+ NAMES                                                          VARCHAR2(20)
+ PHNO                                                           NUMBER(10)
+ ADDRESS                                                        VARCHAR2(30)
+ FID                                                            NUMBER(4)
+
+SQL> SELECT *
+  2  FROM USER_CONSTRAINTS
+  3  WHERE TABLE_NAME='FAC';
+
+OWNER
+----------------------------------------------------------------------------------------------------
+CONSTRAINT_NAME                C TABLE_NAME
+------------------------------ - ------------------------------
+SEARCH_CONDITION
+--------------------------------------------------------------------------------
+R_OWNER
+----------------------------------------------------------------------------------------------------
+R_CONSTRAINT_NAME              DELETE_RU STATUS   DEFERRABLE     DEFERRED  VALIDATED
+------------------------------ --------- -------- -------------- --------- -------------
+GENERATED      BAD RELY LAST_CHAN INDEX_OWNER                    INDEX_NAME
+-------------- --- ---- --------- ------------------------------ ------------------------------
+INVALID VIEW_RELATED
+------- --------------
+SCOTT
+SYS_C007059                    P FAC
+
+
+                                         ENABLED  NOT DEFERRABLE IMMEDIATE VALIDATED
+GENERATED NAME          11-SEP-26 SCOTT                          SYS_C007059
+
+
+SCOTT
+U_N                            U FAC
+
+
+                                         ENABLED  NOT DEFERRABLE IMMEDIATE VALIDATED
+USER NAME               15-SEP-26 SCOTT                          U_N
+
+
+
+SQL> DROP TABLE FAC;
+DROP TABLE FAC
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+
+SQL> DROP TABLE STUDENT ;
+
+Table dropped.
+
+SQL> FLASHBACK TABLE STUDENT TO BEFORE DROP;
+
+Flashback complete.
+
+SQL> SHOW RECYCLEBIN;
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAC                            TABLE
+SALGRADE                       TABLE
+STUDENT                        TABLE
+
+6 rows selected.
+
+SQL> DROP TABLE STUDENT;
+
+Table dropped.
+
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BIN$1T9DJ97OTA+UpbaWCrvGgw==$0 TABLE
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAC                            TABLE
+SALGRADE                       TABLE
+
+6 rows selected.
+
+SQL> PURGE TABLE STUDENT;
+
+Table purged.
+
+SQL> SHOW RECYCLEBIN;
+SQL> SELECT *FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAC                            TABLE
+SALGRADE                       TABLE
+
+SQL>

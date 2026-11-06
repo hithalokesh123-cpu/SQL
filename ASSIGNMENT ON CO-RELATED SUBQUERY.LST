@@ -1,0 +1,138 @@
+------------------COR-RELATED SUBQUERY------------------------------
+SQL> --1. WAQTD NAME AND SALARY WHO IS EARNING STH MAXIMUM SALARY.
+SQL> SELECT E1.ENAME,E1.SAL
+  2  FROM EMP E1
+  3  WHERE 5-1 IN (SELECT COUNT(DISTINCT E2.SAL)
+  4                FROM EMP E2
+  5                WHERE E1.SAL < E2.SAL);
+
+ENAME             SAL                                                                                                                                                                                   
+---------- ----------                                                                                                                                                                                   
+CLARK            2450   
+                                                                                                                                                                                
+
+SQL> --2. WAQTD DETAILS OF THE EMP WHO IS EARING 4TH MINIMUM SALARY.
+  1  SELECT *
+  2  FROM EMP E1
+  3  WHERE 4-1 IN (SELECT COUNT(DISTINCT E2.SAL)
+  4                FROM EMP E2
+  5*               WHERE E1.SAL>E2.SAL)
+SQL> /
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                   
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                   
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                   
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                   
+
+
+SQL> --3. WAQTD DETAILS OF THE EMP WHO ARE EARNING TOP 5 MINIMUM SALARIES.
+SQL> SELECT SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE E1.SAL>E2.SAL) IN (0,1,2,3,4);
+
+       SAL
+----------
+       800
+      1250
+      1250
+      1100
+       950
+      1300
+
+6 rows selected.
+
+SQL> --4. WAQTD NAME AND SALARY OF THE EMP WHO ARE EARNING TOP 3 MINIMUM & TOP 3 MAXIMUM SALARIES.
+SQL> SELECT E1.SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE E1.SAL>E2.SAL) IN (0,1,2)
+  6  OR (SELECT COUNT(DISTINCT E2.SAL)
+  7         FROM EMP E3
+  8         WHERE (E1.SAL<E3.SAL) IN (0,1,2);
+OR (SELECT COUNT(DISTINCT E2.SAL)
+    *
+ERROR at line 6:
+ORA-00936: missing expression
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT E1.SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE (E1.SAL>E2.SAL) IN (0,1,2)
+  6  OR (SELECT COUNT(DISTINCT E2.SAL)
+  7         FROM EMP E3
+  8*        WHERE (E1.SAL<E3.SAL) IN (0,1,2)
+SQL> /
+WHERE (SELECT COUNT(DISTINCT E2.SAL)
+       *
+ERROR at line 3:
+ORA-00936: missing expression
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT E1.SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE (E1.SAL>E2.SAL)) IN (0,1,2)
+  6  OR (SELECT COUNT(DISTINCT E2.SAL)
+  7         FROM EMP E3
+  8*        WHERE (E1.SAL<E3.SAL)) IN (0,1,2)
+SQL> /
+OR (SELECT COUNT(DISTINCT E2.SAL)
+                          *
+ERROR at line 6:
+ORA-00904: "E2"."SAL": invalid identifier
+
+
+SQL> ED;
+Wrote file afiedt.buf
+
+  1  SELECT E1.SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE (E1.SAL>E2.SAL)) IN (0,1,2)
+  6  OR (SELECT COUNT(DISTINCT E3.SAL)
+  7         FROM EMP E3
+  8*        WHERE (E1.SAL<E3.SAL)) IN (0,1,2)
+SQL> /
+
+       SAL
+----------
+       800
+      2975
+      3000
+      5000
+      1100
+       950
+      3000
+
+7 rows selected.
+
+SQL> --5. WAQTD 1ST, 2ND 4TH, 6TH, 7TH, MAXIMUM SALARIES.
+SQL> SELECT E1.SAL
+  2  FROM EMP E1
+  3  WHERE (SELECT COUNT(DISTINCT E2.SAL)
+  4         FROM EMP E2
+  5         WHERE (E1.SAL<E2.SAL)) IN (0,1,3,5,6);
+
+       SAL
+----------
+      1600
+      2850
+      3000
+      5000
+      1500
+      3000
+
+6 rows selected.

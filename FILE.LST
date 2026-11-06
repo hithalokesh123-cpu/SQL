@@ -1,0 +1,77 @@
+SQL> SELECT ENAME,SAL>2000 AS MORE THAN 2000
+  2  
+SQL> SET PAGES 100 LINES 100
+SQL> SELECT ENAME,SAL>2000 AS MORE THAN 2000
+  2  FROM EMP;
+SELECT ENAME,SAL>2000 AS MORE THAN 2000
+                *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT ENAME,SAL>2000 AS MORE THAN 2000
+  2  FROM EMP;
+SELECT ENAME,SAL>2000 AS MORE THAN 2000
+                *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> WATQD EMPLOYEE NAME WHO ARE EARNING MORE THAN 2000
+SP2-0734: unknown command beginning "WATQD EMPL..." - rest of line ignored.
+SQL> --
+SQL> --WATQD EMPLOYEE NAME WHO ARE EARNING MORE THAN 2000
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  WHERE SAL>2000;
+
+ENAME                                                                                               
+----------                                                                                          
+JONES                                                                                               
+BLAKE                                                                                               
+CLARK                                                                                               
+SCOTT                                                                                               
+KING                                                                                                
+FORD                                                                                                
+
+6 rows selected.
+
+SQL> SELECT HI||HELLO
+  2  FROM EMP;
+SELECT HI||HELLO
+           *
+ERROR at line 1:
+ORA-00904: "HELLO": invalid identifier 
+
+
+SQL> SELECT "HI"||"HELLO"
+  2  FROM EMP;
+SELECT "HI"||"HELLO"
+             *
+ERROR at line 1:
+ORA-00904: "HELLO": invalid identifier 
+
+
+SQL> SELECT 'HI'||'HELLO'
+  2  FROM EMP;
+
+'HI'||'                                                                                             
+-------                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+HIHELLO                                                                                             
+
+14 rows selected.
+
+SQL> 

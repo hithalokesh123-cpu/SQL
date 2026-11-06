@@ -1,0 +1,330 @@
+SQL> ---1. List the employees who are not working as managers and clerks in dept 10 and 20 with a salary in the range of 1000 to 3000
+SQL> SELECT *
+  2  FROM EMP
+  3  WHERE JOB NOT IN ('MANAGER','CLERK') AND DEPTNO IN (10,20) AND SAL BETWEEN 1000 AND 3000;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO               
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------               
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20               
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20               
+
+SQL> --2. List the employees whose salary not in the range of 1000 to 2000 in dept 10,20,30 except all salesmen
+SQL> SELECT *
+  2  FROM EMP
+  3  WHERE SAL NOT BETWEEN 1000 AND 2000 AND DEPTNO IN (10,20,30) AND JOB!='SALESMAN';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO               
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------               
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20               
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20               
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30               
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10               
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20               
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10               
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30               
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20               
+
+8 rows selected.
+
+SQL> --3.3. List the department names which are having letter 'O' in their locations as well as their department names
+  1  SELECT *
+  2  FROM DEPT
+  3* WHERE LOC LIKE '%O%' AND DNAME LIKE '%O%'
+SQL> /
+
+    DEPTNO DNAME          LOC                                                                       
+---------- -------------- -------------                                                             
+        10 ACCOUNTING     NEW YORK                                                                  
+        40 OPERATIONS     BOSTON                                                                    
+
+SQL> --4. Display all the employees whose job has string 'MAN' in it.
+SQL> SELECT *
+  2  FROM EMP
+  3  WHERE JOB LIKE '%MAN%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO               
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------               
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30               
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30               
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20               
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30               
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30               
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10               
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30               
+
+7 rows selected.
+
+SQL> ---------------------------------------------------------------------------------------
+SQL>  --1) display the maximum salary, minimum salary and total salary from employee
+SQL> SELECT MAX(SAL) ,MIN(SAL),SUM(SAL)
+  2  FROM EMP;
+
+  MAX(SAL)   MIN(SAL)   SUM(SAL)                                                                    
+---------- ---------- ----------                                                                    
+      5000        800      29025                                                                    
+
+SQL> --2)Write a query to display total number of employees
+SQL> SELECT COUNT(*)
+  2  FROM EMP;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+        14                                                                                          
+
+SQL> --3. Display the number of employee who has commission
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE COMM IS NOT NULL;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+         4                                                                                          
+
+SQL> --4) List the number of employees in department 30
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE DEPTNO=30;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+         6                                                                                          
+
+SQL> --5) Display the total salary in department 30
+  1  SELECT SUM(SAL)
+  2  FROM EMP
+  3* WHERE DEPTNO=30
+SQL> /
+
+  SUM(SAL)                                                                                          
+----------                                                                                          
+      9400                                                                                          
+
+SQL> --6) List the number of clerks in department 20
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE JOB='CLERK' AND DEPTNO=20;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+         2                                                                                          
+
+SQL> --7) List the highest and lowest salary earned by salesmen
+SQL> SELECT MAX(SAL),MIN(SAL)
+  2  FROM EMP
+  3  WHERE JOB='SALESMAN';
+
+  MAX(SAL)   MIN(SAL)                                                                               
+---------- ----------                                                                               
+      1600       1250                                                                               
+
+SQL> --
+SQL> 8) Display the No of employees who are earning salary above 3000.
+SP2-0734: unknown command beginning "8) Display..." - rest of line ignored.
+SQL> --8) Display the No of employees who are earning salary above 3000.
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE SAL>3000;
+
+  COUNT(*)                                                                                          
+----------                                                                                          
+         1                                                                                          
+
+SQL> --9)Write a query to count unique department Numbers
+SQL> SELECT COUNT(DISTINCT DEPTNO)
+  2  FROM EMP;
+
+COUNT(DISTINCTDEPTNO)                                                                               
+---------------------                                                                               
+                    3                                                                               
+
+SQL> --10) The below SELECT query returns the oldest and latest hired dates of employees in the organization.
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE MAX(HIREDATE) AND MIN(HIREDATE);
+WHERE MAX(HIREDATE) AND MIN(HIREDATE)
+      *
+ERROR at line 3:
+ORA-00934: group function is not allowed here 
+
+
+SQL> SELECT MAX(HIREDATE),MIN(HIREDATE)
+  2  FROM EMP
+  3  ;
+
+MAX(HIRED MIN(HIRED                                                                                 
+--------- ---------                                                                                 
+23-MAY-87 17-DEC-80                                                                                 
+
+SQL> --------------------------------------------------------------------------------------------------------------
+SQL> --1) Display the total salary of all departments
+SQL> SELECT SUM(SAL)
+  2  ,DEPTNO
+  3  FROM EMP
+  4  GROUP BY DEPTNO;
+
+  SUM(SAL)     DEPTNO                                                                               
+---------- ----------                                                                               
+      9400         30                                                                               
+     10875         20                                                                               
+      8750         10                                                                               
+
+SQL> 2) Display the maximum salary of each job
+ SELECT MAX(SAL),JOB
+  2  FROM EMP
+  3  GROUP BY JOB;
+
+  MAX(SAL) JOB
+---------- ---------
+      1300 CLERK
+      1600 SALESMAN
+      5000 PRESIDENT
+      2975 MANAGER
+      3000 ANALYST
+
+ --3)Display job-wise highest salary only if the highest salary is more than Rs1500
+SQL> SELECT JOB,MAX(SAL)
+  2  FROM EMP
+  3  WHERE SAL>1500
+  4  GROUP BY JOB;
+
+JOB         MAX(SAL)
+--------- ----------
+SALESMAN        1600
+PRESIDENT       5000
+MANAGER         2975
+ANALYST         3000
+
+
+-- --4) Display job-wise highest salary only if the highest salary is more than 1500 excluding department 30. Sort the data based on highest salary in the ascending order.And then we have to be
+SQL> SELECT JOB,MAX(SAL)
+  2  FROM EMP
+  3  WHERE  DEPTNO<>30
+  4  GROUP BY JOB
+  5  HAVING MAX(SAL)>1500
+  6  ORDER BY MAX(SAL);
+
+JOB         MAX(SAL)
+--------- ----------
+MANAGER         2975
+ANALYST         3000
+PRESIDENT       5000
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+ --1) Display the department numbers along with the number of employees in it
+SQL> SELECT DEPTNO,COUNT(*)
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+
+    DEPTNO   COUNT(*)
+---------- ----------
+        30          6
+        20          5
+        10          3
+--2) Display the department numbers which are having more than 4 employees in them
+SQL> SELECT COUNT(*),DEPTNO
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*)>4;
+
+  COUNT(*)     DEPTNO
+---------- ----------
+         6         30
+         5         20
+
+--SQL> --3) Display the maximum salary for each of the job excluding all the employees whose name ends with 'S'
+  MAX(SAL) JOB       ENAME
+---------- --------- ----------
+      1250 SALESMAN  WARD
+      2450 MANAGER   CLARK
+      3000 ANALYST   FORD
+      1300 CLERK     MILLER
+       800 CLERK     SMITH
+      3000 ANALYST   SCOTT
+      1500 SALESMAN  TURNER
+      2850 MANAGER   BLAKE
+      5000 PRESIDENT KING
+      1250 SALESMAN  MARTIN
+      1600 SALESMAN  ALLEN
+
+11 rows selected.
+
+--4) Display the department numbers which are having more than 9000 as their departmental total salary
+  1> SELECT DEPTNO,SUM(SAL)
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING SUM(SAL)>9000;
+
+    DEPTNO   SUM(SAL)
+---------- ----------
+        30       9400
+        20       108
+
+-------------------ORDER BY-------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+SELECT * FROM EMP
+  2  ORDER BY JOB,SAL;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+
+14 rows selected.
+
+SQL> SELECT * FROM EMP
+  2  ORDER BY JOB DESC;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+
+14 rows selected.
+
+SQL> SELECT * FROM EMP
+  2  ORDER BY SAL DESC;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+
+14 rows selected.
